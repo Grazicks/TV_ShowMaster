@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">TV_Shows-master</string>
     <string name="tv_shows_most_popular">TV Shows | Most popular</string>
+    <string name="read_less">Read Less</string>
+    <string name="read_more">Read More</string>
+    <string name="u2022">•</string>
+    <string name="episodes">Episodes</string>
+    <string name="website">Website</string>
 </resources>

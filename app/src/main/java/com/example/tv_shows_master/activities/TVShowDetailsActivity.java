@@ -1,6 +1,9 @@
 package com.example.tv_shows_master.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
@@ -16,6 +20,8 @@ import com.example.tv_shows_master.R;
 import com.example.tv_shows_master.adapters.ImageSliderAdapter;
 import com.example.tv_shows_master.databinding.ActivityTvshowDetailsBinding;
 import com.example.tv_shows_master.viewmodels.TVShowDetailsViewModel;
+
+import java.util.Locale;
 
 public class TVShowDetailsActivity extends AppCompatActivity {
     private ActivityTvshowDetailsBinding activityTvshowDetailsBinding;
@@ -48,6 +54,53 @@ public class TVShowDetailsActivity extends AppCompatActivity {
                                 tvShowDetailsResponse.getTvShowDetails().getImagePath()
                         );
                         activityTvshowDetailsBinding.imageTVShow.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.setDescription(
+                                String.valueOf(
+                                        HtmlCompat.fromHtml(
+                                                tvShowDetailsResponse.getTvShowDetails().getDescription(),
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        )
+                                )
+                        );
+                        activityTvshowDetailsBinding.txtDescription.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.txtReadMore.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.txtReadMore.setOnClickListener(v -> {
+                            if (activityTvshowDetailsBinding.txtReadMore.getText().toString().equals("Read More")) {
+                                activityTvshowDetailsBinding.txtDescription.setMaxLines(Integer.MAX_VALUE);
+                                activityTvshowDetailsBinding.txtDescription.setEllipsize(null);
+                                activityTvshowDetailsBinding.txtReadMore.setText(R.string.read_less);
+                            } else {
+                                activityTvshowDetailsBinding.txtDescription.setMaxLines(4);
+                                activityTvshowDetailsBinding.txtDescription.setEllipsize(TextUtils.TruncateAt.END);
+                                activityTvshowDetailsBinding.txtReadMore.setText(R.string.read_more);
+                            }
+                        });
+                        activityTvshowDetailsBinding.setRating(
+                                String.format(
+                                        Locale.getDefault(),
+                                        "%.2f",
+                                        Double.parseDouble(tvShowDetailsResponse.getTvShowDetails().getRating())
+                                )
+                        );
+                        if (tvShowDetailsResponse.getTvShowDetails().getGenres() != null) {
+                            activityTvshowDetailsBinding.setGenre(tvShowDetailsResponse.getTvShowDetails().getGenres()[0]);
+                        } else {
+                            activityTvshowDetailsBinding.setGenre("N/A");
+
+                        }
+                        activityTvshowDetailsBinding.setRuntime(tvShowDetailsResponse.getTvShowDetails().getRuntime() + " Min");
+                        activityTvshowDetailsBinding.viewDivider1.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.layoutMisc.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.viewDivider2.setVisibility(View.VISIBLE);
+
+                        activityTvshowDetailsBinding.btnWebSite.setOnClickListener(v -> {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(tvShowDetailsResponse.getTvShowDetails().getUrl()));
+                            startActivity(intent);
+                        });
+
+                        activityTvshowDetailsBinding.btnWebSite.setVisibility(View.VISIBLE);
+                        activityTvshowDetailsBinding.btnEpisodes.setVisibility(View.VISIBLE);
                         loadBasicTVShowDetails();
                     }
                 });
