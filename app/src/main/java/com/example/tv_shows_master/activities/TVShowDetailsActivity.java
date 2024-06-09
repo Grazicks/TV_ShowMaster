@@ -25,10 +25,12 @@ public class TVShowDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityTvshowDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_tvshow_details);
+        doInitialization();
 
     }
     private void doInitialization() {
         tvShowDetailsViewModel = new ViewModelProvider(this).get(TVShowDetailsViewModel.class);
+        activityTvshowDetailsBinding.imageBack.setOnClickListener(v -> onBackPressed());
         getTVShowDetails();
     }
     private void getTVShowDetails(){
@@ -40,9 +42,13 @@ public class TVShowDetailsActivity extends AppCompatActivity {
                     if (tvShowDetailsResponse.getTvShowDetails() != null) {
 
                         if (tvShowDetailsResponse.getTvShowDetails().getPictures() != null) {
-                            /*--------------------------------------------get Slider images from API ----------------------------------------------------*/
                             loadImageSlider(tvShowDetailsResponse.getTvShowDetails().getPictures());
                         }
+                        activityTvshowDetailsBinding.setTvShowImageURL(
+                                tvShowDetailsResponse.getTvShowDetails().getImagePath()
+                        );
+                        activityTvshowDetailsBinding.imageTVShow.setVisibility(View.VISIBLE);
+                        loadBasicTVShowDetails();
                     }
                 });
 
@@ -96,5 +102,20 @@ public class TVShowDetailsActivity extends AppCompatActivity {
                 );
             }
         }
+    }
+
+    private void loadBasicTVShowDetails() {
+        activityTvshowDetailsBinding.textName.setVisibility(View.VISIBLE);
+        activityTvshowDetailsBinding.txtNetworkCountry.setVisibility(View.VISIBLE);
+        activityTvshowDetailsBinding.txtStatus.setVisibility(View.VISIBLE);
+        activityTvshowDetailsBinding.txtStarted.setVisibility(View.VISIBLE);
+        activityTvshowDetailsBinding.setTvShowName(getIntent().getStringExtra("name"));
+        activityTvshowDetailsBinding.setNetworkCountry(
+                getIntent().getStringExtra("network") + " (" +
+                        getIntent().getStringExtra("country") + ")"
+        );
+        activityTvshowDetailsBinding.setStatus(getIntent().getStringExtra("status"));
+        activityTvshowDetailsBinding.setStartDate(getIntent().getStringExtra("startDate"));
+
     }
 }
