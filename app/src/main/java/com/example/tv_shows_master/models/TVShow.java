@@ -1,9 +1,11 @@
 package com.example.tv_shows_master.models;
 
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "tvShows")
 public class TVShow {
     @PrimaryKey
     @SerializedName("id")
