@@ -13,6 +13,7 @@ import com.example.tv_shows_master.adapters.WatchlistAdapter;
 import com.example.tv_shows_master.databinding.ActivityWatchlistBinding;
 import com.example.tv_shows_master.listeners.WatchlistListener;
 import com.example.tv_shows_master.models.TVShow;
+import com.example.tv_shows_master.utilities.TempDataHolder;
 import com.example.tv_shows_master.viewmodels.WatchlistViewModel;
 
 import java.util.ArrayList;
@@ -63,7 +64,10 @@ public class WatchlistActivity extends AppCompatActivity implements WatchlistLis
     @Override
     protected void onResume() {
         super.onResume();
-        loadWatchlist();
+        if (TempDataHolder.IS_WATCHLIST_UPDATED){
+            loadWatchlist();
+            TempDataHolder.IS_WATCHLIST_UPDATED=false;
+        }
     }
 
     @Override
