@@ -7,7 +7,7 @@
 
         <variable
             name="tvShow"
-            type="com.example.tvshows.models.TVShow" />
+            type="com.example.tv_shows_master.models.TVShow" />
 
     </data>
 

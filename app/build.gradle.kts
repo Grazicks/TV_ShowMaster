@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.tv_shows_master"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.tv_shows_master"
