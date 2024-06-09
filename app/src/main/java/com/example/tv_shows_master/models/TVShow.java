@@ -5,8 +5,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @Entity(tableName = "tvShows")
-public class TVShow {
+public class TVShow implements Serializable {
     @PrimaryKey
     @SerializedName("id")
     private int id;
