@@ -10,6 +10,7 @@ import com.example.tv_shows_master.models.TVShow;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class WatchlistViewModel extends AndroidViewModel {
@@ -21,5 +22,8 @@ public class WatchlistViewModel extends AndroidViewModel {
     }
     public Flowable<List<TVShow>> loadWatchlist(){
         return  tvShowsDatabase.tvShowDAO().getWatchlist();
+    }
+    public Completable removeTvShowFromWatchlist(TVShow tvShow){
+        return tvShowsDatabase.tvShowDAO().removeFromWatchlist(tvShow);
     }
 }
