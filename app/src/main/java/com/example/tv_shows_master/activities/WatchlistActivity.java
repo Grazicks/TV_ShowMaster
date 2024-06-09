@@ -1,23 +1,32 @@
 package com.example.tv_shows_master.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.tv_shows_master.R;
+import com.example.tv_shows_master.adapters.WatchlistAdapter;
 import com.example.tv_shows_master.databinding.ActivityWatchlistBinding;
+import com.example.tv_shows_master.listeners.WatchlistListener;
+import com.example.tv_shows_master.models.TVShow;
 import com.example.tv_shows_master.viewmodels.WatchlistViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class WatchlistActivity extends AppCompatActivity {
+public class WatchlistActivity extends AppCompatActivity implements WatchlistListener {
     private ActivityWatchlistBinding activityWatchlistBinding;
     private WatchlistViewModel watchlistViewModel;
+    private WatchlistAdapter watchlistAdapter;
+    List<TVShow> watchlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,8 @@ public class WatchlistActivity extends AppCompatActivity {
     private void doInitialization() {
         watchlistViewModel = new ViewModelProvider(this).get(WatchlistViewModel.class);
         activityWatchlistBinding.imgBack.setOnClickListener(v -> onBackPressed());
+        watchlist = new ArrayList<>();
+        loadWatchlist();
     }
 
     private void loadWatchlist() {
@@ -38,7 +49,14 @@ public class WatchlistActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tvShows -> {
                     activityWatchlistBinding.setIsLoading(false);
-                    Toast.makeText(getApplicationContext(),"Watchlist: " + tvShows.size(), Toast.LENGTH_SHORT).show();
+                    if (watchlist.size() > 0) {
+                        watchlist.clear();
+                    }
+                    watchlist.addAll(tvShows);
+                    watchlistAdapter = new WatchlistAdapter(watchlist, this);
+                    activityWatchlistBinding.rvWatchlist.setAdapter(watchlistAdapter);
+                    activityWatchlistBinding.rvWatchlist.setVisibility(View.VISIBLE);
+                    compositeDisposable.dispose();
                 })
         );
     }
@@ -46,5 +64,17 @@ public class WatchlistActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadWatchlist();
+    }
+
+    @Override
+    public void onTVShowClicked(TVShow tvShow) {
+        Intent i = new Intent(getApplicationContext(), TVShowDetailsActivity.class);
+        i.putExtra("tvShow", tvShow);
+        startActivity(i);
+    }
+
+    @Override
+    public void removeTvShowFromWatchlist(TVShow tvShow, int position) {
+
     }
 }
