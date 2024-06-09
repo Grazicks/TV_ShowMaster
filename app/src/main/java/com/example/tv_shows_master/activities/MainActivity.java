@@ -1,8 +1,10 @@
-package com.example.tv_shows_master;
+package com.example.tv_shows_master.activities;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.example.tv_shows_master.R;
 
 public class MainActivity extends AppCompatActivity {
 
