@@ -19,7 +19,6 @@ import com.example.tv_shows_master.adapters.TVShowAdapter;
 import com.example.tv_shows_master.databinding.ActivitySearchBinding;
 import com.example.tv_shows_master.listeners.TVShowsListener;
 import com.example.tv_shows_master.models.TVShow;
-import com.example.tv_shows_master.models.TVShowDetails;
 import com.example.tv_shows_master.viewmodels.SearchViewModel;
 
 import java.util.ArrayList;
@@ -123,7 +122,7 @@ public class SearchActivity extends AppCompatActivity implements TVShowsListener
     }
     @Override
     public void onTVShowClicked(TVShow tvShow) {
-        Intent intent = new Intent(getApplicationContext(), TVShowDetails.class);
+        Intent intent = new Intent(getApplicationContext(), TVShowDetailsActivity.class);
         intent.putExtra("tvShow", tvShow);
         startActivity(intent);
     }
